@@ -44,4 +44,9 @@ yarn-error.log*
 
 # NOTE: _source-assets/ is deliberately NOT ignored. `npm run media` regenerates
 # every shipped image from it, so a clone without it cannot rebuild the site's
-# photography. It is ~8 MB and never served — nothing outside public/ is.
+# photography. It is ~2 MB and never served — nothing outside public/ is.
+#
+# The design-direction mockups are the exception: they are reference material,
+# not brand assets, the build does not need them, and they were the bulk of the
+# repository's weight. Kept on disk, out of version control.
+_source-assets/ref-*
