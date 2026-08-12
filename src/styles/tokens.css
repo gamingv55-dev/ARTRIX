@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ATRIX — DESIGN TOKENS
+   Single source of truth for colour, type, space, motion and depth.
+   Nothing in the component layer should invent a raw value; if you need
+   one that isn't here, add it here first.
+   See docs/design-system.md for the reasoning behind each scale.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── PALETTE ────────────────────────────────────────────────────────
+     Two grounds — bone and ink — sampled from the direction mockup. Every
+     other value is a tone sitting between them. There is deliberately no
+     brand accent: `signal` is ochre lifted from the painted watch dial and
+     appears only where it carries meaning (focus rings, stock state), never
+     as decoration. A palette this narrow is what keeps the photography,
+     not the interface, in the foreground. */
+  --color-bone: #f6f1e9;
+  --color-bone-raised: #fbf8f3;
+  --color-bone-sunk: #ebe5db;
+
+  --color-ink: #131313;
+  --color-ink-raised: #1d1d1f;
+  --color-ink-sunk: #0b0b0b;
+
+  --color-graphite: #46423c; /* body copy on bone */
+  --color-smoke: #7b756b; /* muted copy on bone */
+  --color-chalk: #a49d94; /* muted copy on ink */
+  --color-bone-dim: #cbc5bb; /* body copy on ink */
+
+  --color-signal: #b8934e;
+  --color-alert: #9c4a35;
+
+  /* Ground-aware aliases. These resolve per-section via the [data-ground]
+     contract below, so `bg-ground` / `text-figure` / `border-rule` are
+     correct on a bone band and an ink band without a single dark: variant. */
+  --color-ground: var(--ground);
+  --color-ground-raised: var(--ground-raised);
+  --color-ground-sunk: var(--ground-sunk);
+  --color-figure: var(--figure);
+  --color-figure-body: var(--figure-body);
+  --color-figure-muted: var(--figure-muted);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  /* ── TYPEFACES ──────────────────────────────────────────────────────
+     Two families, both variable, both self-hosted through next/font.
+     Archivo carries the whole editorial voice — its width axis is what
+     lets the wordmark stretch without a second display cut. The mono is
+     reserved for text that is genuinely data: prices, SKUs, indices,
+     spec rows. Using it anywhere else dilutes that signal. */
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
+
+  /* ── TYPE SCALE ─────────────────────────────────────────────────────
+     Fluid between a 360px phone and a 1920px desktop. Ratios tighten as
+     sizes grow, which is what keeps large settings from feeling bloated. */
+  --text-display-1: clamp(2.75rem, 6.4vw, 6.5rem);
+  --text-display-1--line-height: 0.92;
+  --text-display-1--letter-spacing: -0.035em;
+
+  --text-display-2: clamp(2rem, 4vw, 3.75rem);
+  --text-display-2--line-height: 0.98;
+  --text-display-2--letter-spacing: -0.03em;
+
+  --text-h1: clamp(1.75rem, 3vw, 2.75rem);
+  --text-h1--line-height: 1.04;
+  --text-h1--letter-spacing: -0.025em;
+
+  --text-h2: clamp(1.375rem, 2vw, 2rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.012em;
+
+  --text-lead: clamp(1.0625rem, 1.25vw, 1.375rem);
+  --text-lead--line-height: 1.38;
+  --text-lead--letter-spacing: -0.014em;
+
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.62;
+
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.55;
+
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.1;
+  --text-label--letter-spacing: 0.16em;
+
+  --text-micro: 0.625rem;
+  --text-micro--line-height: 1.1;
+  --text-micro--letter-spacing: 0.2em;
+
+  /* ── SPACE & LAYOUT ─────────────────────────────────────────────────
+     `gutter` is the page margin and the grid's outer edge — the single
+     value that decides how much air the whole site has. `band` is the
+     vertical rhythm of a section; alternating band and band-lg is what
+     produces the calm/impact pacing. */
+  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
+  --spacing-band: clamp(4.5rem, 9vw, 10rem);
+  --spacing-band-lg: clamp(6.5rem, 13vw, 15rem);
+  --spacing-band-sm: clamp(2.5rem, 5vw, 5rem);
+
+  --container-page: 1920px;
+  --container-prose: 62ch;
+
+  /* ── MOTION ─────────────────────────────────────────────────────────
+     One easing family. `out-expo` is the house curve: it leaves fast and
+     settles slowly, which reads as confident rather than bouncy. Springs
+     and JS-driven values live in src/motion/tokens.ts and mirror these. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --dur-micro: 160ms;
+  --dur-fast: 260ms;
+  --dur-base: 420ms;
+  --dur-slow: 720ms;
+  --dur-cinematic: 1100ms;
+
+  /* ── DEPTH ──────────────────────────────────────────────────────────
+     A closed set. Never write a raw z-index in a component. */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-overlay: 60;
+  --z-drawer: 70;
+  --z-flight: 80; /* add-to-bag image in transit */
+  --z-cursor: 90;
+  --z-transition: 100;
+  --z-boot: 110;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GROUND CONTRACT
+   Any element can declare which ground it sits on. Descendants using the
+   ground-aware colour utilities invert automatically. This is what allows
+   the header to read correctly as it crosses from a bone band into an ink
+   one, and what keeps ProductCard from needing two colour variants.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root,
+[data-ground="bone"] {
+  --ground: var(--color-bone);
+  --ground-raised: var(--color-bone-raised);
+  --ground-sunk: var(--color-bone-sunk);
+  --figure: var(--color-ink);
+  --figure-body: var(--color-graphite);
+  --figure-muted: var(--color-smoke);
+  --rule: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  --rule-strong: color-mix(in srgb, var(--color-ink) 38%, transparent);
+  color-scheme: light;
+}
+
+[data-ground="ink"] {
+  --ground: var(--color-ink);
+  --ground-raised: var(--color-ink-raised);
+  --ground-sunk: var(--color-ink-sunk);
+  --figure: var(--color-bone);
+  --figure-body: var(--color-bone-dim);
+  --figure-muted: var(--color-chalk);
+  --rule: color-mix(in srgb, var(--color-bone) 18%, transparent);
+  --rule-strong: color-mix(in srgb, var(--color-bone) 40%, transparent);
+  color-scheme: dark;
+}

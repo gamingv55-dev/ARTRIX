@@ -1,0 +1,47 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# next
+.next/
+out/
+build/
+next-env.d.ts
+
+# production
+dist/
+
+# environment — never commit real values
+.env
+.env.local
+.env*.local
+.env.production
+
+# testing
+coverage/
+
+# misc
+.DS_Store
+Thumbs.db
+*.pem
+*.tsbuildinfo
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# editor / local tooling
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.claude/
+
+# deploy
+.vercel
+
+# NOTE: _source-assets/ is deliberately NOT ignored. `npm run media` regenerates
+# every shipped image from it, so a clone without it cannot rebuild the site's
+# photography. It is ~8 MB and never served — nothing outside public/ is.

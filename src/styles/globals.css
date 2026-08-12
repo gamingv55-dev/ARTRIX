@@ -1,0 +1,374 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    /* Nothing in this design is rounded. Stated once, here, so a stray
+       utility can't quietly soften an edge. */
+    border-radius: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Lenis drives scrolling; native smooth would fight it. The reduced-motion
+       branch below hands control back to the browser. */
+    scroll-behavior: auto;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--ground);
+    color: var(--figure);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  /* Lenis owns the scroll position; the body must not also scroll. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--figure);
+    color: var(--ground);
+  }
+
+  /* One focus treatment across the whole site. Ochre is the only place a
+     colour outside bone/ink appears, and it only ever appears here and on
+     stock indicators — i.e. only when it means something. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UTILITIES
+   Only patterns that recur across sections and can't be expressed as a
+   short utility chain. Anything used once belongs in its component.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@utility page-gutter {
+  padding-inline: var(--spacing-gutter);
+}
+
+/* The site is edge-to-edge, but content stops widening past `page` so an
+   ultrawide monitor gets margin instead of a stretched 12-column grid. */
+@utility page-shell {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+/* ── Type roles ──────────────────────────────────────────────────────── */
+
+/* The wordmark. Sized in vw so it stays flush to both page edges at every
+   width; the width axis is dialled back on narrow screens where a fully
+   expanded cut would break to two lines. */
+@utility type-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-stretch: 112%;
+  font-size: 23.2vw;
+  line-height: 0.74;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+@utility type-micro {
+  font-family: var(--font-sans);
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+  letter-spacing: var(--text-micro--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Reserved for genuine data — prices, SKUs, indices, spec values. */
+@utility type-data {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+/* ── The dashed rule ─────────────────────────────────────────────────────
+   The signature graphic of the identity. Built from a gradient rather than
+   `border-style: dashed` because browsers each pick their own dash length
+   and phase, and this motif is too load-bearing to leave to them. */
+@utility rule-dashed {
+  height: 1px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0 4px,
+    transparent 4px 10px
+  );
+  opacity: 0.42;
+}
+
+@utility rule-dashed-v {
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    currentColor 0 4px,
+    transparent 4px 10px
+  );
+  opacity: 0.42;
+}
+
+@utility rule-solid {
+  height: 1px;
+  width: 100%;
+  background-color: var(--rule);
+}
+
+/* ── Media ───────────────────────────────────────────────────────────── */
+
+/* Every photograph sits in a fixed-ratio frame so the grid can never shift
+   while images decode. Paired with next/image fill. */
+@utility media-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--ground-sunk);
+}
+
+/* Underlay for text set over photography. A hand-tuned two-stop ramp reads
+   far cleaner than a plain black overlay, which flattens the image. */
+@utility media-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.55) 0%,
+    rgb(0 0 0 / 0.22) 34%,
+    rgb(0 0 0 / 0) 66%
+  );
+  pointer-events: none;
+}
+
+/* ── Interaction ─────────────────────────────────────────────────────── */
+
+/* Underline that wipes in from the left on hover. Used on every inline
+   link so link affordance is consistent site-wide. */
+@utility link-wipe {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-base) var(--ease-out-expo);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Horizontal rails: native scrolling (so touch momentum and keyboard both
+   work for free) with the scrollbar suppressed and drag layered on top. */
+@utility rail-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility drag-none {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GRAIN
+   A single fixed layer over the whole document. Static — animating grain
+   costs a full-viewport repaint every frame and buys almost nothing.
+   Opacity is deliberately near the threshold of perception: it should read
+   as paper stock, never as a filter.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   KEYFRAMES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Marquee. The track is rendered twice and shifted by exactly half its own
+   width, which is what makes the loop seamless at any content length. */
+@keyframes atrix-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Boot sequence counter and wordmark. */
+@keyframes atrix-boot-out {
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   Cinematic layers are removed; nothing that carries meaning is. Reveal
+   animations resolve to their finished state rather than being skipped
+   mid-way, so no content can be left invisible.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain {
+    display: none;
+  }
+
+  [data-marquee] {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Coarse pointers get no custom cursor and no hover-only affordances. */
+@media (hover: none) {
+  [data-cursor-root] {
+    display: none;
+  }
+}
