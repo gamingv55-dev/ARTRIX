@@ -47,7 +47,19 @@ Behind nginx or Caddy, proxy to `127.0.0.1:3000`. Two things to get right:
 - Do not let the proxy strip or override the `Cache-Control` on `/media/*` —
   those headers are set in `next.config.ts` and are correct.
 
-`next/image` optimisation needs `sharp`, which is already a dependency.
+`next/image` optimisation needs `sharp` at runtime when self-hosting. It is
+currently a **devDependency** — fine for Vercel (which runs image optimisation
+on its own infrastructure) and fine for the command above, since `npm ci`
+installs dev dependencies. If you install with `--omit=dev`, move `sharp` into
+`dependencies` first or `next/image` will fail at runtime.
+
+### About the npm deprecation warnings
+
+`npm install` prints a deprecation notice for `whatwg-encoding`. It is a
+transitive dev-only dependency of `jsdom`, which is only present for the test
+suite. It is a warning, not an error, it never fails a build, and it does not
+enter the deployed output. Nothing to do about it here — it resolves when jsdom
+updates its own tree.
 
 ### Docker
 
