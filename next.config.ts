@@ -3,9 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // A stray lockfile in the user's home directory makes Next infer the wrong
-  // workspace root, which breaks build-trace collection for deployment.
-  outputFileTracingRoot: import.meta.dirname,
+  // A stray lockfile in a parent directory makes Next infer the wrong workspace
+  // root, which breaks build-trace collection.
+  //
+  // Uses process.cwd() rather than import.meta.dirname on purpose: Next may
+  // load this config as CommonJS depending on the runtime, and `import.meta` is
+  // unavailable there — it would be undefined at best and a hard error at
+  // worst. process.cwd() is defined in both module systems and in every Node
+  // version, and Next always builds from the project root.
+  outputFileTracingRoot: process.cwd(),
 
   images: {
     // AVIF first: the product photography is large-format and photographic,
