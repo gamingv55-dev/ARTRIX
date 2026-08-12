@@ -107,7 +107,7 @@ export function NewsletterForm() {
               status === "error"
                 ? "type-micro text-[var(--color-alert)]"
                 : status === "done"
-                  ? "type-micro text-[var(--color-signal)]"
+                  ? "type-micro text-[var(--signal)]"
                   : "type-micro text-[var(--figure-muted)]"
             }
           >

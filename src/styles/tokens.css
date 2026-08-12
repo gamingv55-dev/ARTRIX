@@ -23,24 +23,34 @@
   --color-ink-sunk: #0b0b0b;
 
   --color-graphite: #46423c; /* body copy on bone */
-  --color-smoke: #7b756b; /* muted copy on bone */
+  /* Muted copy on bone. Tuned to clear 4.5:1 against bone — the labels it is
+     used for are 11px, so they are "normal text" for WCAG AA, not large text. */
+  --color-smoke: #716b62;
   --color-chalk: #a49d94; /* muted copy on ink */
   --color-bone-dim: #cbc5bb; /* body copy on ink */
 
-  --color-signal: #b8934e;
+  /* Ochre, lifted from the painted watch dial. Two cuts, because one cannot
+     clear contrast on both grounds: the light cut is 6.5:1 on ink but only
+     2.6:1 on bone, which fails both the 4.5:1 text threshold and the 3:1
+     minimum for focus indicators. Consumers use the ground-scoped `--signal`,
+     never these directly. */
+  --color-signal-on-ink: #b8934e;
+  --color-signal-on-bone: #866a37;
   --color-alert: #9c4a35;
 
-  /* Ground-aware aliases. These resolve per-section via the [data-ground]
-     contract below, so `bg-ground` / `text-figure` / `border-rule` are
-     correct on a bone band and an ink band without a single dark: variant. */
-  --color-ground: var(--ground);
-  --color-ground-raised: var(--ground-raised);
-  --color-ground-sunk: var(--ground-sunk);
-  --color-figure: var(--figure);
-  --color-figure-body: var(--figure-body);
-  --color-figure-muted: var(--figure-muted);
-  --color-rule: var(--rule);
-  --color-rule-strong: var(--rule-strong);
+  /* NOTE: there are deliberately no `--color-ground` / `--color-figure`
+     aliases here.
+
+     Declaring `--color-figure: var(--figure)` inside @theme looks like it
+     would give ground-aware `text-figure` utilities, and it does not. A custom
+     property whose value contains var() is substituted where it is DECLARED,
+     not where it is used — @theme emits into :root, so it would freeze to the
+     bone-ground value and inherit that everywhere, silently rendering ink text
+     on ink bands.
+
+     Components reference the scoped properties directly instead:
+     `text-[var(--figure)]`, `bg-[var(--ground)]`. Those resolve at the element
+     and are correct on both grounds. See docs/design-system.md. */
 
   /* ── TYPEFACES ──────────────────────────────────────────────────────
      Two families, both variable, both self-hosted through next/font.
@@ -129,7 +139,6 @@
   --z-overlay: 60;
   --z-drawer: 70;
   --z-flight: 80; /* add-to-bag image in transit */
-  --z-cursor: 90;
   --z-transition: 100;
   --z-boot: 110;
 }
@@ -152,6 +161,12 @@
   --figure-muted: var(--color-smoke);
   --rule: color-mix(in srgb, var(--color-ink) 16%, transparent);
   --rule-strong: color-mix(in srgb, var(--color-ink) 38%, transparent);
+  /* Translucent ground, for surfaces that sit over content — the sticky header
+     and filter bar. A real token rather than a `/88` opacity modifier on
+     --ground: the modifier resolves against :root and would paint a bone plate
+     over an ink band. */
+  --ground-veil: color-mix(in srgb, var(--color-bone) 88%, transparent);
+  --signal: var(--color-signal-on-bone);
   color-scheme: light;
 }
 
@@ -164,5 +179,7 @@
   --figure-muted: var(--color-chalk);
   --rule: color-mix(in srgb, var(--color-bone) 18%, transparent);
   --rule-strong: color-mix(in srgb, var(--color-bone) 40%, transparent);
+  --ground-veil: color-mix(in srgb, var(--color-ink) 88%, transparent);
+  --signal: var(--color-signal-on-ink);
   color-scheme: dark;
 }

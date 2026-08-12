@@ -18,7 +18,7 @@ Motion here should read as *confident*, not playful. Concretely:
   expensive-feeling motion from bouncy motion.
 - **Short travel distances.** 24px for text, 40px for cards. Long travel reads as
   a slideshow.
-- **Springs only for tracked gestures.** Magnetic pull, cursor follow, drag
+- **Springs only for tracked gestures.** Magnetic pull, pointer parallax, drag
   release. Never for entrances — a spring entrance is exactly where "premium"
   turns into "cartoon".
 - **Stagger by line, not by character.** Per-character reveals on a paragraph are
@@ -72,7 +72,7 @@ makes an interface exhausting.
 | 1    | Colour and underline on hover              | Every link (`.link-wipe`), nav, footer                |
 | 2    | Transform, scale, magnetic pull            | Buttons, product cards, bag, primary CTAs             |
 | 3    | Masked reveals, scroll parallax, page transitions | Section entrances, sticky frames, route changes |
-| 4    | WebGL                                      | The hero photograph. Once.                            |
+| 4    | WebGL                                      | The hero photograph. Once, on the whole site.         |
 
 Tier 4 appears in exactly one place on the entire site. That is what makes it
 register as a moment rather than a texture.
@@ -117,23 +117,25 @@ Neither needed GSAP.
 
 ---
 
-## The cursor
+## The cursor: removed
 
-`src/components/cursor/Cursor.tsx`, driven entirely by markup:
+There was a custom cursor — a dot that expanded into a labelled disc over
+products and the drag rail. It has been taken out at the client's request, and
+the native cursor is used throughout.
 
-```html
-<a data-cursor="view" data-cursor-label="VIEW PIECE">
-```
+Worth stating plainly because it is a recurring temptation on sites like this: a
+custom cursor is a tier-4 cost paid on *every* pointer movement across the whole
+site, in exchange for an effect that competes with the photography and that many
+people simply find worse than the pointer they chose. This site already spends
+its one tier-4 budget on the hero shader.
 
-No context, no hook, no import for consumers — which means a component can never
-leave the cursor stuck in a stale state because it forgot to reset on unmount.
+Native cursors still carry meaning where they should — `cursor-grab` /
+`cursor-grabbing` on the drop rail, `cursor-not-allowed` on sold-out sizes. Those
+are affordances, not decoration.
 
-Position rides on motion values, so the cursor never triggers a React render.
-State changes ride on `pointerover`, which fires when the hovered element changes
-rather than on every pixel of movement.
-
-Renders nothing without a fine pointer or with reduced motion on, and the native
-cursor is only hidden once the replacement is confirmed live.
+If it is ever wanted back, the pattern that worked was attribute-driven
+(`data-cursor="view"` read by one delegated `pointerover` listener), which meant
+no component had to import or reset anything.
 
 ---
 
@@ -164,7 +166,6 @@ Honoured everywhere, and treated as *remove the cinema, keep the meaning*:
   rather than being cancelled mid-way. Content can never be stranded at
   opacity 0.
 - Lenis does not initialise.
-- The cursor does not render.
 - The boot sequence is skipped.
 - Page transitions are skipped.
 - The WebGL hero does not load.

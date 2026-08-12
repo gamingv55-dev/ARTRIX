@@ -96,8 +96,6 @@ export function ProductCard({
         onPointerLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        data-cursor="view"
-        data-cursor-label={soldOut ? "SOLD OUT" : "VIEW PIECE"}
         aria-label={`${product.name}${soldOut ? ", sold out" : `, ${formatMoney(product.price)}`}`}
         className="media-frame block focus-visible:outline-offset-[-2px]"
         style={{ aspectRatio: "2 / 3" }}

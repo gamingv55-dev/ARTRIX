@@ -30,16 +30,34 @@ Any element declares which ground it sits on:
 <section data-ground="ink"> … </section>
 ```
 
-Descendants using the ground-aware utilities invert automatically:
+Descendants reference the scoped properties directly and invert automatically:
 
 ```
-bg-ground   text-figure   text-figure-muted   border-rule
+bg-[var(--ground)]        text-[var(--figure)]
+text-[var(--figure-muted)]  border-[var(--rule)]
+bg-[var(--ground-veil)]   text-[var(--figure-body)]
 ```
 
-Under the hood, `[data-ground]` redefines `--ground`, `--figure`, `--rule` and
-friends; `@theme` maps Tailwind's colour names onto those. Custom property
-substitution is lazy, so `var(--color-figure)` resolves against the nearest
-`[data-ground]` ancestor at use time.
+`[data-ground]` redefines `--ground`, `--figure`, `--rule` and friends in terms
+of the flat palette constants, and each utility resolves them at the element.
+
+### Two traps, both of which bit during the build
+
+**1. Do not add `@theme` aliases for these.** Declaring
+`--color-figure: var(--figure)` inside `@theme` looks like it would give you a
+tidy `text-figure` utility. It does not work. A custom property whose value
+contains `var()` is substituted **where it is declared**, not where it is used —
+`@theme` emits into `:root`, so the alias freezes to the bone-ground value and
+inherits that everywhere. The result is ink text on ink bands.
+
+Scoped tokens like `--figure: var(--color-ink)` are fine, because they are
+declared *inside* the `[data-ground]` block and point at a flat constant.
+
+**2. Do not use opacity modifiers on them.** `bg-[var(--ground)]/88` has the same
+failure: the modifier resolves against `:root`, so the sticky header painted a
+bone plate over ink bands. Where a translucent or muted variant is needed, add a
+real per-ground token — `--ground-veil` and `--figure-muted` exist for exactly
+this — rather than reaching for `/NN`.
 
 **What this buys:**
 
@@ -50,8 +68,8 @@ substitution is lazy, so `var(--color-figure)` resolves against the nearest
   (`useHeaderState`) and stays legible as it crosses band boundaries.
 
 **Rule:** never hard-code `text-[var(--color-ink)]` inside a reusable component.
-Use `text-figure`. Page-level sections may name the literal, because they are the
-things declaring the ground in the first place.
+Use `text-[var(--figure)]`. Page-level sections may name the literal, because
+they are the things declaring the ground in the first place.
 
 ---
 
@@ -65,19 +83,47 @@ things declaring the ground in the first place.
 | `--color-ink`          | `#131313` | Dark ground                    |
 | `--color-ink-raised`   | `#1d1d1f` | Cards on ink                   |
 | `--color-graphite`     | `#46423c` | Body copy on bone              |
-| `--color-smoke`        | `#7b756b` | Muted copy on bone             |
+| `--color-smoke`        | `#716b62` | Muted copy on bone             |
 | `--color-chalk`        | `#a49d94` | Muted copy on ink              |
 | `--color-bone-dim`     | `#cbc5bb` | Body copy on ink               |
-| `--color-signal`       | `#b8934e` | Focus, stock state. Nothing else. |
+| `--color-signal-on-bone` | `#866a37` | Focus, stock state — bone ground |
+| `--color-signal-on-ink`  | `#b8934e` | Focus, stock state — ink ground  |
 | `--color-alert`        | `#9c4a35` | Form errors                    |
+
+The ochre needs two cuts. A single value cannot clear contrast on both grounds:
+the light one is 6.5:1 on ink but 2.6:1 on bone, which fails the 4.5:1 text
+threshold *and* the 3:1 minimum for focus indicators. Consumers use the
+ground-scoped `--signal` and never touch either constant directly.
+
+Per-ground, resolved from the above by `[data-ground]`:
+
+| Token             | Use                                                   |
+| ----------------- | ------------------------------------------------------- |
+| `--ground`        | Section background                                     |
+| `--ground-veil`   | Translucent background for sticky surfaces over content |
+| `--ground-sunk`   | Image wells, recessed surfaces                          |
+| `--figure`        | Primary text and marks                                  |
+| `--figure-body`   | Body copy                                               |
+| `--figure-muted`  | Annotations, inactive controls                          |
+| `--rule`          | Hairlines                                               |
+| `--rule-strong`   | Borders on interactive elements                         |
 
 Bone and ink were sampled from the direction mockup rather than eyeballed —
 `scripts/prepare-media.mjs` reports both when it runs.
 
-**Contrast:** ink on bone is about 15.5:1, bone on ink about 15.5:1. Graphite on
-bone ≈ 8.6:1, smoke on bone ≈ 4.6:1, chalk on ink ≈ 7.4:1. Muted tones are used
-for annotation-scale text and clear AA at those sizes; body copy uses graphite
-and bone-dim.
+**Contrast**, measured in-browser against the ground each token resolves on:
+
+| Token            | On bone   | On ink    |
+| ---------------- | --------- | --------- |
+| `--figure`       | 16.53:1   | 16.53:1   |
+| `--figure-body`  | 8.87:1    | 10.83:1   |
+| `--figure-muted` | 4.69:1    | 6.93:1    |
+| `--signal`       | 4.52:1    | 6.48:1    |
+
+Every pair clears WCAG AA for normal text (4.5:1); the lowest is 4.52:1. That
+matters for `--figure-muted` in particular, because the labels it is used for
+are 11px — "normal text", not large text, so the 3:1 large-text allowance does
+not apply. Two tokens were darkened during the build specifically to clear this.
 
 ---
 

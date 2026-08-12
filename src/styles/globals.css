@@ -114,7 +114,7 @@
      colour outside bone/ink appears, and it only ever appears here and on
      stock indicators — i.e. only when it means something. */
   :focus-visible {
-    outline: 2px solid var(--color-signal);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
   }
   :focus:not(:focus-visible) {
@@ -366,9 +366,3 @@
   }
 }
 
-/* Coarse pointers get no custom cursor and no hover-only affordances. */
-@media (hover: none) {
-  [data-cursor-root] {
-    display: none;
-  }
-}

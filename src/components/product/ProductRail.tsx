@@ -35,8 +35,6 @@ export function ProductRail({
         ref={ref}
         {...dragProps}
         data-lenis-prevent
-        data-cursor={canScroll ? "drag" : undefined}
-        data-cursor-label={canScroll ? "DRAG" : undefined}
         tabIndex={0}
         aria-label="Drop 01 pieces"
         onKeyDown={(e) => {

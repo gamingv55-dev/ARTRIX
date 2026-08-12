@@ -214,7 +214,7 @@ export function CartDrawer() {
                       </div>
                     </div>
                   ) : (
-                    <p className="type-micro mb-5 text-[var(--color-signal)]">
+                    <p className="type-micro mb-5 text-[var(--signal)]">
                       Free shipping unlocked
                     </p>
                   )}

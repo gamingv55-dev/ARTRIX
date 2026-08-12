@@ -95,12 +95,7 @@ export default function LookbookPage() {
               )}
             >
               {frame.productSlug ? (
-                <Link
-                  href={`/product/${frame.productSlug}`}
-                  data-cursor="view"
-                  data-cursor-label="VIEW PIECE"
-                  className="group block"
-                >
+                <Link href={`/product/${frame.productSlug}`} className="group block">
                   {body}
                 </Link>
               ) : (

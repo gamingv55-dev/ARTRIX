@@ -98,10 +98,11 @@ The hero shader is the only GPU work on the site, and it is fenced in:
 
 - Everything animated is `transform`, `opacity` or `clip-path`. Nothing animates
   a property that triggers layout.
-- Pointer-driven values (cursor, parallax, magnetic) ride on motion values and
-  **never trigger a React render**.
-- One global `pointermove` listener for parallax, not one per layer. The cursor
-  uses `pointerover`, which fires on element change rather than per pixel.
+- Pointer-driven values (parallax, magnetic) ride on motion values and **never
+  trigger a React render**.
+- One global `pointermove` listener for parallax, not one per layer. Magnetic
+  elements listen on themselves rather than hit-testing every element against a
+  shared listener each frame.
 - Scroll state uses IntersectionObserver, not `getBoundingClientRect` in a scroll
   handler. `useHeaderState` collapses the viewport to a thin band with
   `rootMargin` so "which section is under the header" is a plain intersection

@@ -6,7 +6,6 @@ import { Header } from "./Header";
 import { SmoothScroll } from "./SmoothScroll";
 import { PageTransition } from "./PageTransition";
 import { BootSequence } from "./BootSequence";
-import { Cursor } from "@/components/cursor/Cursor";
 import { CartDrawer } from "@/components/commerce/CartDrawer";
 import { FlyToBag } from "@/components/commerce/FlyToBag";
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
@@ -63,7 +62,6 @@ export function AppShell({
       <CartDrawer />
       <FlyToBag />
       <SearchOverlay open={searchOpen} onClose={closeSearch} products={products} />
-      <Cursor />
 
       <div className="grain" aria-hidden="true" />
     </>

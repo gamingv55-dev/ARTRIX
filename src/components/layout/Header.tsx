@@ -62,7 +62,7 @@ export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
           aria-hidden="true"
           className={cn(
             "absolute inset-0 -z-10 border-b transition-opacity duration-[var(--dur-slow)] ease-[var(--ease-out-expo)]",
-            "bg-[var(--ground)]/88 border-[var(--rule)] backdrop-blur-[6px]",
+            "bg-[var(--ground-veil)] border-[var(--rule)] backdrop-blur-[6px]",
             scrolled ? "opacity-100" : "opacity-0",
           )}
         />
@@ -104,8 +104,10 @@ export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "link-wipe type-label",
-                          active ? "text-[var(--figure)]" : "text-[var(--figure)]/70 hover:text-[var(--figure)]",
+                          "link-wipe type-label transition-colors duration-[var(--dur-fast)]",
+                          active
+                            ? "text-[var(--figure)]"
+                            : "text-[var(--figure-muted)] hover:text-[var(--figure)]",
                         )}
                       >
                         {item.label}
@@ -121,7 +123,7 @@ export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
             <button
               type="button"
               onClick={onOpenSearch}
-              className="link-wipe type-label text-[var(--figure)]/70 transition-colors hover:text-[var(--figure)]"
+              className="link-wipe type-label text-[var(--figure-muted)] transition-colors duration-[var(--dur-fast)] hover:text-[var(--figure)]"
             >
               Search
             </button>

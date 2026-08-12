@@ -76,7 +76,7 @@ export function FilterBar({
   }
 
   return (
-    <div className="sticky top-16 z-[var(--z-sticky)] bg-[var(--ground)]/92 backdrop-blur-[6px]">
+    <div className="sticky top-16 z-[var(--z-sticky)] bg-[var(--ground-veil)] backdrop-blur-[6px]">
       <DashedRule className="text-[var(--figure)]" />
 
       <div className="flex items-center justify-between gap-6 py-4">
@@ -90,7 +90,7 @@ export function FilterBar({
           >
             Filter
             {activeCount > 0 && (
-              <span className="type-data text-[var(--color-signal)]">
+              <span className="type-data text-[var(--signal)]">
                 {padIndex(activeCount)}
               </span>
             )}
@@ -126,7 +126,7 @@ export function FilterBar({
               />
               <span
                 className={cn(
-                  "type-micro transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[var(--color-signal)]",
+                  "type-micro transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[var(--signal)]",
                   sort === option.key
                     ? "text-[var(--figure)]"
                     : "text-[var(--figure-muted)] hover:text-[var(--figure)]",
@@ -185,7 +185,7 @@ export function FilterBar({
                         <span
                           className={cn(
                             "inline-block min-w-[3rem] border px-3.5 py-2.5 text-center type-label transition-colors",
-                            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-signal)]",
+                            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--signal)]",
                             checked
                               ? "border-[var(--figure)] bg-[var(--figure)] text-[var(--ground)]"
                               : "border-[var(--rule-strong)] text-[var(--figure)] hover:border-[var(--figure)]",
@@ -217,7 +217,7 @@ export function FilterBar({
                         <span
                           className={cn(
                             "inline-block border px-3.5 py-2.5 type-label transition-colors",
-                            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-signal)]",
+                            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--signal)]",
                             checked
                               ? "border-[var(--figure)] bg-[var(--figure)] text-[var(--ground)]"
                               : "border-[var(--rule-strong)] text-[var(--figure)] hover:border-[var(--figure)]",
@@ -247,7 +247,7 @@ export function FilterBar({
                   <span
                     className={cn(
                       "inline-block border px-3.5 py-2.5 type-label transition-colors",
-                      "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-signal)]",
+                      "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--signal)]",
                       filters.availableOnly
                         ? "border-[var(--figure)] bg-[var(--figure)] text-[var(--ground)]"
                         : "border-[var(--rule-strong)] text-[var(--figure)] hover:border-[var(--figure)]",

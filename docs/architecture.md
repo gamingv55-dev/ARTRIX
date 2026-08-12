@@ -42,7 +42,7 @@ possible, and the split is deliberate:
 | `ProductAccordion`             | Open/closed state.                            |
 | `CartDrawer`, `BagButton`      | Cart state.                                   |
 | `SearchOverlay`, `FilterBar`   | Query and filter state.                       |
-| `Cursor`, `HeroCanvas`         | Pointer and GL.                               |
+| `HeroCanvas`                   | GL context and render loop.                   |
 | Sections using scroll motion   | `useScroll` needs the DOM.                    |
 
 The product page ships almost no JavaScript for what is mostly text and images:

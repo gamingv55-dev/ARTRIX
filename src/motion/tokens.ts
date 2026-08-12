@@ -41,7 +41,7 @@ export const ease = {
  * entrances; a spring entrance is where "premium" turns into "bouncy".
  */
 export const spring = {
-  /** Cursor and pointer-tracked parallax. Fast, almost no overshoot. */
+  /** Pointer-tracked parallax. Fast, almost no overshoot. */
   pointer: { stiffness: 420, damping: 42, mass: 0.6 },
   /** Magnetic elements pulling toward the cursor. */
   magnetic: { stiffness: 260, damping: 22, mass: 0.7 },

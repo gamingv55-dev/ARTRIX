@@ -192,7 +192,7 @@ export function ProductPurchase({ product }: { product: Product }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: duration.fast, ease: ease.outExpo }}
-                className="type-micro text-[var(--color-signal)]"
+                className="type-micro text-[var(--signal)]"
               >
                 {selectedVariant?.inventory} left in {size}
               </motion.p>
